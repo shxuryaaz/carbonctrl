@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users can read and write their own user document
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Quizzes are readable by authenticated users
+    match /quizzes/{quizId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        (resource.data.role == 'teacher' || resource.data.role == 'admin');
+    }
+    
+    // Quiz results are readable by the user who took them
+    match /quiz_results/{resultId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+    }
+    
+    // Leaderboard is readable by all authenticated users
+    match /leaderboard/{entryId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+    }
+    
+    // EcoCoins transactions are readable by the user
+    match /transactions/{transactionId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+    }
+    
+    // Story missions are readable by authenticated users
+    match /missions/{missionId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        (resource.data.role == 'teacher' || resource.data.role == 'admin');
+    }
+    
+    // Mission progress is readable by the user
+    match /mission_progress/{progressId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+    }
+  }
+}
