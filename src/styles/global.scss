@@ -383,10 +383,12 @@ button {
 .main-content {
   flex: 1;
   padding: var(--space-6);
-  margin-left: 280px; // Sidebar width
+  margin-left: 280px; // Account for fixed sidebar width
+  width: calc(100% - 280px); // Subtract sidebar width
   
   @include respond-below(lg) {
     margin-left: 0;
+    width: 100%;
     padding: var(--space-4);
   }
 }

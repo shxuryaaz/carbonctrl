@@ -8,11 +8,12 @@
 .dashboard-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: var(--space-6);
+  padding: 0;
 }
 
 .dashboard-header {
   margin-bottom: var(--space-8);
+  padding-top: var(--space-4);
   
   h1 {
     font-size: var(--text-3xl);
