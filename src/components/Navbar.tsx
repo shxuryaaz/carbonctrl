@@ -69,6 +69,12 @@ const Navbar: React.FC = () => {
             >
               Leaderboard
             </Link>
+            <Link 
+              to="/eco-coins" 
+              className={`nav-link ${location.pathname === '/eco-coins' ? 'active' : ''}`}
+            >
+              EcoCoins
+            </Link>
           </div>
         )}
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -205,6 +205,16 @@ function App() {
                           >
                             <ARMissions />
                           </motion.div>
+                        </ProtectedRoute>
+                      } 
+                    />
+                    
+                    {/* Catch-all route for authenticated users */}
+                    <Route 
+                      path="*" 
+                      element={
+                        <ProtectedRoute>
+                          <Navigate to="/dashboard" replace />
                         </ProtectedRoute>
                       } 
                     />
