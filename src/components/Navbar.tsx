@@ -5,16 +5,8 @@ import { useAuth } from '../context/AuthContext';
 import './Navbar.scss';
 
 const Navbar: React.FC = () => {
-  const { user, userProfile, logout } = useAuth();
+  const { user, userProfile } = useAuth();
   const location = useLocation();
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-    } catch (error) {
-      console.error('Logout failed:', error);
-    }
-  };
 
   return (
     <motion.nav 
@@ -93,14 +85,6 @@ const Navbar: React.FC = () => {
                 <span className="user-name">{userProfile.displayName}</span>
                 <span className="user-role">{userProfile.role}</span>
               </div>
-              <motion.button
-                className="logout-btn"
-                onClick={handleLogout}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Logout
-              </motion.button>
             </div>
           ) : (
             <div className="auth-links">

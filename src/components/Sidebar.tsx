@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import './Sidebar.scss';
@@ -50,9 +50,19 @@ const sidebarItems: SidebarItem[] = [
 ];
 
 const Sidebar: React.FC = () => {
-  const { user, userProfile } = useAuth();
+  const { user, userProfile, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
   // Don't show sidebar on auth pages
   if (!user || location.pathname === '/login' || location.pathname === '/signup') {
@@ -158,6 +168,29 @@ const Sidebar: React.FC = () => {
             )}
           </AnimatePresence>
         </div>
+        
+        {/* Logout Button */}
+        <motion.button
+          className="logout-btn"
+          onClick={handleLogout}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <span className="logout-icon">🚪</span>
+          <AnimatePresence>
+            {!isCollapsed && (
+              <motion.span 
+                className="logout-text"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                Logout
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </motion.button>
       </div>
     </motion.aside>
   );

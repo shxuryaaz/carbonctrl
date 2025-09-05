@@ -9,7 +9,21 @@ interface AppLayoutProps {
 }
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <div className="app">
+        <div className="loading-container">
+          <div className="loading-spinner">
+            <div className="spinner"></div>
+            <p>Loading CarbonCtrl...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // For public pages (no user), don't show sidebar/navbar
   if (!user) {

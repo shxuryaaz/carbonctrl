@@ -1,12 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import './styles/global.scss';
 
 // Components
 import AppLayout from './components/AppLayout';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
 import Landing from './pages/Landing';
@@ -19,7 +20,6 @@ import StoryMissions from './pages/StoryMissions';
 import Leaderboard from './pages/Leaderboard';
 import EcoCoins from './pages/EcoCoins';
 import ARMissions from './pages/ARMissions';
-import ProtectedRoute from './components/ProtectedRoute';
 
 // Animation variants
 const pageVariants = {
@@ -43,186 +43,157 @@ const pageTransition = {
   duration: 0.4,
 };
 
+// Wrapper component for animated pages
+const AnimatedPage: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <motion.div
+    initial="initial"
+    animate="in"
+    exit="out"
+    variants={pageVariants}
+    transition={pageTransition}
+  >
+    {children}
+  </motion.div>
+);
+
+// Public route wrapper that redirects authenticated users
+const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user, loading } = useAuth();
+  
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner">
+          <div className="spinner"></div>
+          <p>Loading CarbonCtrl...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  if (user) {
+    return <Navigate to="/dashboard" replace />;
+  }
+  
+  return <AnimatedPage>{children}</AnimatedPage>;
+};
+
+// Protected route wrapper with animation
+const ProtectedRouteWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <ProtectedRoute>
+    <AnimatedPage>{children}</AnimatedPage>
+  </ProtectedRoute>
+);
+
+// Main App Router Component
+const AppRouter: React.FC = () => {
+  return (
+    <Router>
+      <AppLayout>
+        <AnimatePresence mode="wait">
+          <Routes>
+            {/* Public Routes - Redirect to dashboard if authenticated */}
+            <Route 
+              path="/" 
+              element={
+                <PublicRoute>
+                  <Landing />
+                </PublicRoute>
+              } 
+            />
+            <Route 
+              path="/login" 
+              element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              } 
+            />
+            <Route 
+              path="/signup" 
+              element={
+                <PublicRoute>
+                  <Signup />
+                </PublicRoute>
+              } 
+            />
+            
+            {/* Protected Routes - Redirect to login if not authenticated */}
+            <Route 
+              path="/dashboard" 
+              element={
+                <ProtectedRouteWrapper>
+                  <Dashboard />
+                </ProtectedRouteWrapper>
+              } 
+            />
+            <Route 
+              path="/quizzes" 
+              element={
+                <ProtectedRouteWrapper>
+                  <Quizzes />
+                </ProtectedRouteWrapper>
+              } 
+            />
+            <Route 
+              path="/games" 
+              element={
+                <ProtectedRouteWrapper>
+                  <MiniGames />
+                </ProtectedRouteWrapper>
+              } 
+            />
+            <Route 
+              path="/missions" 
+              element={
+                <ProtectedRouteWrapper>
+                  <StoryMissions />
+                </ProtectedRouteWrapper>
+              } 
+            />
+            <Route 
+              path="/leaderboard" 
+              element={
+                <ProtectedRouteWrapper>
+                  <Leaderboard />
+                </ProtectedRouteWrapper>
+              } 
+            />
+            <Route 
+              path="/eco-coins" 
+              element={
+                <ProtectedRouteWrapper>
+                  <EcoCoins />
+                </ProtectedRouteWrapper>
+              } 
+            />
+            <Route 
+              path="/ar-missions" 
+              element={
+                <ProtectedRouteWrapper>
+                  <ARMissions />
+                </ProtectedRouteWrapper>
+              } 
+            />
+            
+            {/* Catch-all route */}
+            <Route 
+              path="*" 
+              element={<Navigate to="/" replace />} 
+            />
+          </Routes>
+        </AnimatePresence>
+      </AppLayout>
+    </Router>
+  );
+};
+
+// Main App Component
 function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <Router>
-          <AppLayout>
-            <AnimatePresence mode="wait">
-              <Routes>
-                    {/* Public Routes */}
-                    <Route 
-                      path="/" 
-                      element={
-                        <motion.div
-                          initial="initial"
-                          animate="in"
-                          exit="out"
-                          variants={pageVariants}
-                          transition={pageTransition}
-                        >
-                          <Landing />
-                        </motion.div>
-                      } 
-                    />
-                    <Route 
-                      path="/login" 
-                      element={
-                        <motion.div
-                          initial="initial"
-                          animate="in"
-                          exit="out"
-                          variants={pageVariants}
-                          transition={pageTransition}
-                        >
-                          <Login />
-                        </motion.div>
-                      } 
-                    />
-                    <Route 
-                      path="/signup" 
-                      element={
-                        <motion.div
-                          initial="initial"
-                          animate="in"
-                          exit="out"
-                          variants={pageVariants}
-                          transition={pageTransition}
-                        >
-                          <Signup />
-                        </motion.div>
-                      } 
-                    />
-                    
-                    {/* Protected Routes */}
-                    <Route 
-                      path="/dashboard" 
-                      element={
-                        <ProtectedRoute>
-                          <motion.div
-                            initial="initial"
-                            animate="in"
-                            exit="out"
-                            variants={pageVariants}
-                            transition={pageTransition}
-                          >
-                            <Dashboard />
-                          </motion.div>
-                        </ProtectedRoute>
-                      } 
-                    />
-                    <Route 
-                      path="/quizzes" 
-                      element={
-                        <ProtectedRoute>
-                          <motion.div
-                            initial="initial"
-                            animate="in"
-                            exit="out"
-                            variants={pageVariants}
-                            transition={pageTransition}
-                          >
-                            <Quizzes />
-                          </motion.div>
-                        </ProtectedRoute>
-                      } 
-                    />
-                    <Route 
-                      path="/games" 
-                      element={
-                        <ProtectedRoute>
-                          <motion.div
-                            initial="initial"
-                            animate="in"
-                            exit="out"
-                            variants={pageVariants}
-                            transition={pageTransition}
-                          >
-                            <MiniGames />
-                          </motion.div>
-                        </ProtectedRoute>
-                      } 
-                    />
-                    <Route 
-                      path="/missions" 
-                      element={
-                        <ProtectedRoute>
-                          <motion.div
-                            initial="initial"
-                            animate="in"
-                            exit="out"
-                            variants={pageVariants}
-                            transition={pageTransition}
-                          >
-                            <StoryMissions />
-                          </motion.div>
-                        </ProtectedRoute>
-                      } 
-                    />
-                    <Route 
-                      path="/leaderboard" 
-                      element={
-                        <ProtectedRoute>
-                          <motion.div
-                            initial="initial"
-                            animate="in"
-                            exit="out"
-                            variants={pageVariants}
-                            transition={pageTransition}
-                          >
-                            <Leaderboard />
-                          </motion.div>
-                        </ProtectedRoute>
-                      } 
-                    />
-                    <Route 
-                      path="/eco-coins" 
-                      element={
-                        <ProtectedRoute>
-                          <motion.div
-                            initial="initial"
-                            animate="in"
-                            exit="out"
-                            variants={pageVariants}
-                            transition={pageTransition}
-                          >
-                            <EcoCoins />
-                          </motion.div>
-                        </ProtectedRoute>
-                      } 
-                    />
-                    <Route 
-                      path="/ar-missions" 
-                      element={
-                        <ProtectedRoute>
-                          <motion.div
-                            initial="initial"
-                            animate="in"
-                            exit="out"
-                            variants={pageVariants}
-                            transition={pageTransition}
-                          >
-                            <ARMissions />
-                          </motion.div>
-                        </ProtectedRoute>
-                      } 
-                    />
-                    
-                    {/* Catch-all route for authenticated users */}
-                    <Route 
-                      path="*" 
-                      element={
-                        <ProtectedRoute>
-                          <Navigate to="/dashboard" replace />
-                        </ProtectedRoute>
-                      } 
-                    />
-                    
-              </Routes>
-            </AnimatePresence>
-          </AppLayout>
-        </Router>
+        <AppRouter />
       </AuthProvider>
     </ThemeProvider>
   );
