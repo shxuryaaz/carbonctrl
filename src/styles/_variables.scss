@@ -1,10 +1,10 @@
 // Color Palette - Enterprise Grade
 :root {
-  // Primary Colors
-  --primary-emerald: #10b981;
-  --primary-emerald-light: #34d399;
-  --primary-emerald-dark: #059669;
-  --primary-emerald-darker: #047857;
+  // Primary Colors - Darker for better readability
+  --primary-emerald: #047857;
+  --primary-emerald-light: #059669;
+  --primary-emerald-dark: #065f46;
+  --primary-emerald-darker: #064e3b;
   
   // Slate Colors
   --slate-50: #f8fafc;
@@ -33,7 +33,7 @@
   --gray-900: #111827;
   
   // Status Colors
-  --success: #10b981;
+  --success: #047857;
   --warning: #f59e0b;
   --error: #ef4444;
   --info: #3b82f6;
