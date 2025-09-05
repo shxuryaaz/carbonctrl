@@ -233,11 +233,20 @@
   .navbar-nav {
     margin: 0 var(--space-3);
     gap: var(--space-1);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   
   .nav-link {
     font-size: var(--text-xs);
     padding: var(--space-1) var(--space-2);
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 }
 
@@ -249,15 +258,79 @@
   .navbar-nav {
     margin: 0 var(--space-2);
     gap: var(--space-1);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   
   .nav-link {
     font-size: var(--text-xs);
     padding: var(--space-1);
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   
   .user-avatar {
     width: 28px;
     height: 28px;
+  }
+  
+  .user-info {
+    padding: var(--space-1) var(--space-2);
+  }
+  
+  .logout-btn {
+    padding: var(--space-1) var(--space-2);
+    font-size: 0.7rem;
+  }
+}
+
+// Extra small devices
+@include respond-below(sm) {
+  .navbar {
+    height: 60px;
+  }
+  
+  .navbar-container {
+    padding: 0 var(--space-2);
+  }
+  
+  .navbar-logo {
+    font-size: var(--text-sm);
+  }
+  
+  .logo-icon {
+    width: 24px;
+    height: 24px;
+    font-size: var(--text-sm);
+  }
+  
+  .navbar-nav {
+    margin: 0 var(--space-1);
+    gap: 0.5rem;
+  }
+  
+  .nav-link {
+    font-size: 0.7rem;
+    padding: var(--space-1);
+  }
+  
+  .user-avatar {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .user-info {
+    padding: var(--space-1);
+    gap: var(--space-1);
+  }
+  
+  .logout-btn {
+    padding: var(--space-1);
+    font-size: 0.6rem;
   }
 }
