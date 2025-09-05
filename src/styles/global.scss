@@ -388,15 +388,28 @@ button {
 .main-content {
   flex: 1;
   padding: var(--space-6);
-  margin-left: 280px; // Account for fixed sidebar width
-  width: calc(100% - 280px); // Subtract sidebar width
+  margin-left: 280px; // Account for fixed sidebar width (expanded)
+  width: calc(100% - 280px); // Subtract sidebar width (expanded)
   padding-top: var(--space-8); // Add extra top padding to clear navbar
+  transition: all var(--transition-normal); // Smooth transition for dynamic sizing
+  
+  // When sidebar is collapsed
+  .sidebar-collapsed & {
+    margin-left: 80px; // Account for collapsed sidebar width
+    width: calc(100% - 80px); // Subtract collapsed sidebar width
+  }
   
   @include respond-below(lg) {
     margin-left: 0;
     width: 100%;
     padding: var(--space-4);
     padding-top: var(--space-6);
+    
+    // Reset dynamic sizing on mobile
+    .sidebar-collapsed & {
+      margin-left: 0;
+      width: 100%;
+    }
   }
   
   @include respond-below(sm) {

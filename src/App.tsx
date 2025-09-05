@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { SidebarProvider } from './context/SidebarContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import './styles/global.scss';
 
@@ -193,7 +194,9 @@ function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <AppRouter />
+        <SidebarProvider>
+          <AppRouter />
+        </SidebarProvider>
       </AuthProvider>
     </ThemeProvider>
   );

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useSidebar } from '../context/SidebarContext';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import ThemeToggle from './ThemeToggle';
@@ -10,6 +11,7 @@ interface AppLayoutProps {
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const { user, loading } = useAuth();
+  const { isCollapsed } = useSidebar();
 
   // Show loading state while checking authentication
   if (loading) {
@@ -36,7 +38,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
   // For authenticated pages, show full layout
   return (
-    <div className="app">
+    <div className={`app ${isCollapsed ? 'sidebar-collapsed' : ''}`}>
       <Navbar />
       <div className="app-content">
         <Sidebar />

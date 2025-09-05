@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import { useSidebar } from '../context/SidebarContext';
 import './Sidebar.scss';
 
 interface SidebarItem {
@@ -51,9 +52,9 @@ const sidebarItems: SidebarItem[] = [
 
 const Sidebar: React.FC = () => {
   const { user, userProfile, logout } = useAuth();
+  const { isCollapsed, toggleSidebar } = useSidebar();
   const location = useLocation();
   const navigate = useNavigate();
-  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -84,9 +85,11 @@ const Sidebar: React.FC = () => {
       <div className="sidebar-header">
         <motion.button
           className="collapse-btn"
-          onClick={() => setIsCollapsed(!isCollapsed)}
+          onClick={toggleSidebar}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
+          title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           {isCollapsed ? '→' : '←'}
         </motion.button>
