@@ -28,7 +28,7 @@ export interface AIInsights {
 }
 
 class OpenAIService {
-  private async makeRequest(prompt: string, maxTokens: number = 500): Promise<string> {
+  async makeRequest(prompt: string, maxTokens: number = 500): Promise<string> {
     try {
       const completion = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
