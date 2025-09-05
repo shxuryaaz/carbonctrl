@@ -161,4 +161,4 @@ MIT License - see LICENSE file for details
 
 ## Support
 
-For support, email support@carbonctrl.com or create an issue on GitHub.
+For support, email shauryajps@gmail.com or create an issue on GitHub.
