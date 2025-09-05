@@ -405,8 +405,8 @@
 // CTA Section
 .cta-section {
   padding: 120px 0;
-  background: linear-gradient(135deg, var(--primary-emerald) 0%, var(--primary-emerald-light) 100%);
-  color: var(--white);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
   text-align: center;
 }
 
@@ -433,7 +433,7 @@
 .cta-description {
   font-size: var(--text-lg);
   margin-bottom: var(--space-8);
-  opacity: 0.9;
+  color: var(--text-secondary);
   line-height: 1.6;
   
   @include respond-below(md) {
