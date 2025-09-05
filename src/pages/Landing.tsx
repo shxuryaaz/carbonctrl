@@ -40,12 +40,6 @@ const Landing: React.FC = () => {
     }
   ];
 
-  const stats = [
-    { number: '10K+', label: 'Active Users' },
-    { number: '50K+', label: 'Trees Planted' },
-    { number: '100K+', label: 'CO2 Reduced' },
-    { number: '1M+', label: 'EcoCoins Earned' }
-  ];
 
   return (
     <div className="landing-page">
@@ -143,23 +137,6 @@ const Landing: React.FC = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="stats-section">
-        <div className="stats-container">
-          {stats.map((stat, index) => (
-            <motion.div 
-              key={stat.label}
-              className="stat-item"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
-            >
-              <div className="stat-number">{stat.number}</div>
-              <div className="stat-label">{stat.label}</div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
 
       {/* Features Section */}
       <section className="features-section">

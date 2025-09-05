@@ -252,61 +252,6 @@
   color: var(--text-secondary);
 }
 
-// Stats Section
-.stats-section {
-  padding: 80px 0;
-  background: var(--bg-secondary);
-}
-
-.stats-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--space-6);
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-8);
-  
-  @include respond-below(lg) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-6);
-  }
-  
-  @include respond-below(sm) {
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-  }
-}
-
-.stat-item {
-  text-align: center;
-  padding: var(--space-6);
-  background: var(--bg-primary);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--border-color);
-  transition: all var(--transition-normal);
-  
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-  }
-}
-
-.stat-number {
-  font-size: var(--text-3xl);
-  font-weight: var(--font-bold);
-  color: var(--primary-emerald);
-  margin-bottom: var(--space-2);
-  
-  @include respond-to(xl) {
-    font-size: var(--text-4xl);
-  }
-}
-
-.stat-label {
-  font-size: var(--text-base);
-  color: var(--text-secondary);
-  font-weight: var(--font-medium);
-}
 
 // Features Section
 .features-section {
@@ -589,9 +534,5 @@
   .features-section,
   .cta-section {
     padding: 80px 0;
-  }
-  
-  .stats-section {
-    padding: 60px 0;
   }
 }
