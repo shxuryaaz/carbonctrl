@@ -17,7 +17,6 @@ import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import Quizzes from './pages/Quizzes';
 import MiniGames from './pages/MiniGames';
-import StoryMissions from './pages/StoryMissions';
 import Leaderboard from './pages/Leaderboard';
 import EcoCoins from './pages/EcoCoins';
 import ARMissions from './pages/ARMissions';
@@ -141,14 +140,6 @@ const AppRouter: React.FC = () => {
               element={
                 <ProtectedRouteWrapper>
                   <MiniGames />
-                </ProtectedRouteWrapper>
-              } 
-            />
-            <Route 
-              path="/missions" 
-              element={
-                <ProtectedRouteWrapper>
-                  <StoryMissions />
                 </ProtectedRouteWrapper>
               } 
             />

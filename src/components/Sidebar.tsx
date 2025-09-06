@@ -29,11 +29,6 @@ const sidebarItems: SidebarItem[] = [
     icon: '🎮',
   },
   {
-    path: '/missions',
-    label: 'Story Missions',
-    icon: '📚',
-  },
-  {
     path: '/leaderboard',
     label: 'Leaderboard',
     icon: '🏆',

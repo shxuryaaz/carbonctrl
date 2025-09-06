@@ -4,6 +4,7 @@ import { useSidebar } from '../context/SidebarContext';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import ThemeToggle from './ThemeToggle';
+import FloatingChatbot from './FloatingChatbot';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -47,6 +48,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         </main>
       </div>
       <ThemeToggle />
+      <FloatingChatbot />
     </div>
   );
 };

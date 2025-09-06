@@ -17,7 +17,6 @@ CarbonCtrl is a gamified environmental education platform that combines interact
 - **Animations**: Framer Motion for page transitions and micro-interactions
 
 ## Design System
-
 ### Color Palette
 ```scss
 // Primary Colors - Darker for better readability
