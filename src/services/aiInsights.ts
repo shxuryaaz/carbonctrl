@@ -68,8 +68,8 @@ class AIInsightsService {
       // Generate AI insights
       const aiInsights = await openaiService.generateContextualInsights(userProfile, environmentalContext);
       
-      // Generate smart notifications
-      const smartNotifications = await openaiService.generateSmartNotifications(userProfile, environmentalContext);
+      // Generate smart notifications (stored for potential future use)
+      await openaiService.generateSmartNotifications(userProfile, environmentalContext);
       
       // Generate personalized missions
       const personalizedMissions = await openaiService.generatePersonalizedMissions(userProfile, environmentalContext);
@@ -126,7 +126,7 @@ class AIInsightsService {
           type: 'mission' as const,
           title: mission.title,
           description: mission.description,
-          priority: mission.difficulty === 'easy' ? 'low' : mission.difficulty === 'medium' ? 'medium' : 'high',
+          priority: (mission.difficulty === 'easy' ? 'low' : mission.difficulty === 'medium' ? 'medium' : 'high') as 'low' | 'medium' | 'high',
           category: this.categorizeInsight(mission.description),
           points: mission.points,
           estimatedTime: mission.estimatedTime,
@@ -351,12 +351,14 @@ class AIInsightsService {
 
   // Clear cache (useful for testing or when user location changes)
   clearCache(userId: string): void {
-    for (const key of this.insightsCache.keys()) {
+    const insightsKeys = Array.from(this.insightsCache.keys());
+    for (const key of insightsKeys) {
       if (key.startsWith(userId)) {
         this.insightsCache.delete(key);
       }
     }
-    for (const key of this.notificationsCache.keys()) {
+    const notificationsKeys = Array.from(this.notificationsCache.keys());
+    for (const key of notificationsKeys) {
       if (key.startsWith(userId)) {
         this.notificationsCache.delete(key);
       }
