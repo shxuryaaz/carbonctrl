@@ -245,15 +245,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       const dummyUser = {
         uid: 'dummy-user-123',
-        email: 'demo@carbonctrl.com',
-        displayName: 'Demo User',
+        email: 'shaurya@carbonctrl.com',
+        displayName: 'Shaurya Singh',
         photoURL: null,
       } as User;
       
       const dummyProfile = {
         uid: dummyUser.uid,
         email: dummyUser.email || '',
-        displayName: dummyUser.displayName || 'Demo User',
+        displayName: dummyUser.displayName || 'Shaurya Singh',
         photoURL: dummyUser.photoURL || undefined,
         role: 'student' as UserRole,
         schoolId: 'demo-school-123',
