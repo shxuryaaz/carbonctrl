@@ -110,3 +110,4 @@ Your CarbonCtrl mobile app is now ready to use! The PWA installation method is r
 ---
 
 **Need help?** The app includes all the features from your web version and is optimized for mobile devices. You can now track your carbon footprint, earn eco coins, and make a positive impact on the environment right from your phone!
+

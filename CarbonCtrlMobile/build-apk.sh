@@ -54,3 +54,4 @@ cd ..
 echo "📦 Created: CarbonCtrl-Mobile-App.zip"
 echo "🎯 This can be converted to APK using online tools!"
 echo "🌐 Try: https://build.phonegap.com/ or https://www.phonegap.com/"
+

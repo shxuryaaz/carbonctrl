@@ -15,3 +15,4 @@ npx expo export --platform android
 echo "✅ Build completed!"
 echo "📱 APK files should be available in the dist/ directory"
 echo "🎉 Your CarbonCtrl mobile app is ready!"
+

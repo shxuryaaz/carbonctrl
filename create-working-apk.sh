@@ -125,3 +125,4 @@ echo "2. Or use https://www.pwabuilder.com/"
 echo "3. Download the generated APK"
 echo ""
 echo "🎉 Your CarbonCtrl mobile app is ready!"
+

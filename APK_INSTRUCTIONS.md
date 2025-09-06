@@ -83,3 +83,4 @@
 The Android SDK installation is complex and takes time. The online builders are much faster and easier to use.
 
 **Recommendation:** Use PhoneGap Build or PWA Builder for the quickest results!
+
