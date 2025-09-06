@@ -71,13 +71,11 @@ const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     );
   }
   
-  // TEMPORARY: Always redirect to dashboard for testing with dummy profile
-  // if (user) {
-  //   return <Navigate to="/dashboard" replace />;
-  // }
+  if (user) {
+    return <Navigate to="/dashboard" replace />;
+  }
   
-  // For testing, redirect to dashboard instead of showing login/landing
-  return <Navigate to="/dashboard" replace />;
+  return <AnimatedPage>{children}</AnimatedPage>;
 };
 
 // Protected route wrapper with animation
