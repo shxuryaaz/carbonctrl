@@ -21,7 +21,6 @@ import StoryMissions from './pages/StoryMissions';
 import Leaderboard from './pages/Leaderboard';
 import EcoCoins from './pages/EcoCoins';
 import ARMissions from './pages/ARMissions';
-import Logout from './pages/Logout'; 
 
 // Animation variants
 const pageVariants = {
@@ -184,7 +183,6 @@ const AppRouter: React.FC = () => {
               element={<Navigate to="/" replace />} 
             />
           </Routes>
-          <Route path="/logout" element={<Logout />} />
         </AnimatePresence>
       </AppLayout>
     </Router>
