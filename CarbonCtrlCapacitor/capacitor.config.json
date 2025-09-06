@@ -1,0 +1,10 @@
+{
+  "appId": "com.carbonctrl.mobile",
+  "appName": "CarbonCtrl",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": false
+    }
+  }
+}

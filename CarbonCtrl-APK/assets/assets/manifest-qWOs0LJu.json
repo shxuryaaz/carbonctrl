@@ -1,0 +1,27 @@
+{
+  "name": "CarbonCtrl - Eco-Friendly Lifestyle App",
+  "short_name": "CarbonCtrl",
+  "description": "Track your carbon footprint, earn eco coins, and make a positive impact on the environment",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/imgs/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/imgs/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "background_color": "#4CAF50",
+  "theme_color": "#4CAF50",
+  "categories": ["lifestyle", "environment", "productivity"],
+  "lang": "en",
+  "scope": "/"
+}

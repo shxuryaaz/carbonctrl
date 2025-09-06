@@ -1,0 +1,465 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
+@import 'variables';
+@import 'mixins';
+
+// Reset and Base Styles
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-family-primary);
+  font-size: var(--text-base);
+  font-weight: var(--font-normal);
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+// Typography
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-semibold);
+  line-height: 1.2;
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+}
+
+h1 {
+  @include heading-1;
+}
+
+h2 {
+  @include heading-2;
+}
+
+h3 {
+  @include heading-3;
+}
+
+p {
+  @include body-text;
+  margin-bottom: var(--space-4);
+}
+
+a {
+  color: var(--primary-emerald);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  
+  &:hover {
+    color: var(--primary-emerald-dark);
+  }
+}
+
+// Form Elements
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+// Utility Classes
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+  
+  @include respond-to(sm) {
+    padding: 0 var(--space-6);
+  }
+  
+  @include respond-to(lg) {
+    padding: 0 var(--space-8);
+  }
+}
+
+.sr-only {
+  @include sr-only;
+}
+
+.truncate {
+  @include truncate;
+}
+
+// Glassmorphism Components
+.glass-panel {
+  @include glassmorphism;
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  
+  [data-theme="dark"] & {
+    @include glassmorphism-dark;
+  }
+}
+
+.glass-card {
+  @include card-glass;
+  padding: var(--space-6);
+}
+
+// Button Components
+.btn {
+  @include button-base;
+  
+  &--primary {
+    @include button-primary;
+  }
+  
+  &--secondary {
+    @include button-secondary;
+  }
+  
+  &--ghost {
+    @include button-ghost;
+  }
+  
+  &--large {
+    padding: var(--space-4) var(--space-8);
+    font-size: var(--text-lg);
+  }
+  
+  &--small {
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-sm);
+  }
+}
+
+// Input Components
+.input {
+  @include input-base;
+}
+
+.input-group {
+  @include input-floating-label;
+}
+
+// Card Components
+.card {
+  @include card-base;
+  padding: var(--space-6);
+}
+
+// Animation Classes
+.fade-in {
+  @include fade-in;
+}
+
+.slide-up {
+  @include slide-up;
+}
+
+.bounce-in {
+  @include bounce-in;
+}
+
+// Layout Components
+.flex-center {
+  @include flex-center;
+}
+
+.flex-between {
+  @include flex-between;
+}
+
+.flex-column {
+  @include flex-column;
+}
+
+.grid-auto-fit {
+  @include grid-auto-fit;
+}
+
+.grid-auto-fill {
+  @include grid-auto-fill;
+}
+
+// Spacing Utilities
+@for $i from 0 through 24 {
+  .p-#{$i} { padding: var(--space-#{$i}); }
+  .pt-#{$i} { padding-top: var(--space-#{$i}); }
+  .pr-#{$i} { padding-right: var(--space-#{$i}); }
+  .pb-#{$i} { padding-bottom: var(--space-#{$i}); }
+  .pl-#{$i} { padding-left: var(--space-#{$i}); }
+  .px-#{$i} { padding-left: var(--space-#{$i}); padding-right: var(--space-#{$i}); }
+  .py-#{$i} { padding-top: var(--space-#{$i}); padding-bottom: var(--space-#{$i}); }
+  
+  .m-#{$i} { margin: var(--space-#{$i}); }
+  .mt-#{$i} { margin-top: var(--space-#{$i}); }
+  .mr-#{$i} { margin-right: var(--space-#{$i}); }
+  .mb-#{$i} { margin-bottom: var(--space-#{$i}); }
+  .ml-#{$i} { margin-left: var(--space-#{$i}); }
+  .mx-#{$i} { margin-left: var(--space-#{$i}); margin-right: var(--space-#{$i}); }
+  .my-#{$i} { margin-top: var(--space-#{$i}); margin-bottom: var(--space-#{$i}); }
+}
+
+// Text Utilities
+.text-xs { font-size: var(--text-xs); }
+.text-sm { font-size: var(--text-sm); }
+.text-base { font-size: var(--text-base); }
+.text-lg { font-size: var(--text-lg); }
+.text-xl { font-size: var(--text-xl); }
+.text-2xl { font-size: var(--text-2xl); }
+.text-3xl { font-size: var(--text-3xl); }
+.text-4xl { font-size: var(--text-4xl); }
+.text-5xl { font-size: var(--text-5xl); }
+
+.font-light { font-weight: var(--font-light); }
+.font-normal { font-weight: var(--font-normal); }
+.font-medium { font-weight: var(--font-medium); }
+.font-semibold { font-weight: var(--font-semibold); }
+.font-bold { font-weight: var(--font-bold); }
+.font-extrabold { font-weight: var(--font-extrabold); }
+
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+.text-emerald { color: var(--primary-emerald); }
+
+// Background Utilities
+.bg-primary { background-color: var(--bg-primary); }
+.bg-secondary { background-color: var(--bg-secondary); }
+.bg-tertiary { background-color: var(--bg-tertiary); }
+.bg-emerald { background-color: var(--primary-emerald); }
+
+// Border Utilities
+.border { border: 1px solid var(--border-color); }
+.border-emerald { border: 1px solid var(--primary-emerald); }
+.rounded { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.rounded-xl { border-radius: var(--radius-xl); }
+.rounded-2xl { border-radius: var(--radius-2xl); }
+.rounded-full { border-radius: var(--radius-full); }
+
+// Shadow Utilities
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }
+.shadow-2xl { box-shadow: var(--shadow-2xl); }
+
+// Responsive Utilities
+.hidden {
+  display: none;
+}
+
+@include respond-to(sm) {
+  .sm\:block { display: block; }
+  .sm\:flex { display: flex; }
+  .sm\:grid { display: grid; }
+  .sm\:hidden { display: none; }
+}
+
+@include respond-to(md) {
+  .md\:block { display: block; }
+  .md\:flex { display: flex; }
+  .md\:grid { display: grid; }
+  .md\:hidden { display: none; }
+}
+
+@include respond-to(lg) {
+  .lg\:block { display: block; }
+  .lg\:flex { display: flex; }
+  .lg\:grid { display: grid; }
+  .lg\:hidden { display: none; }
+}
+
+// Scrollbar Styling
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--slate-400);
+  border-radius: var(--radius-full);
+  
+  &:hover {
+    background: var(--slate-500);
+  }
+}
+
+[data-theme="dark"] {
+  ::-webkit-scrollbar-track {
+    background: var(--slate-800);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--slate-600);
+    
+    &:hover {
+      background: var(--slate-500);
+    }
+  }
+}
+
+// Focus Styles
+*:focus {
+  outline: 2px solid var(--primary-emerald);
+  outline-offset: 2px;
+}
+
+// Selection Styles
+::selection {
+  background: var(--primary-emerald);
+  color: var(--white);
+}
+
+::-moz-selection {
+  background: var(--primary-emerald);
+  color: var(--white);
+}
+
+// Loading Styles
+.loading-container {
+  @include flex-center;
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+.loading-spinner {
+  @include flex-column;
+  align-items: center;
+  gap: var(--space-4);
+  
+  p {
+    color: var(--text-secondary);
+    font-size: var(--text-lg);
+    font-weight: var(--font-medium);
+  }
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-color);
+  border-top: 3px solid var(--primary-emerald);
+  border-radius: var(--radius-full);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// App Layout
+.app {
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+.app-content {
+  display: flex;
+  min-height: calc(100vh - 70px); // Subtract navbar height
+  margin-top: 70px; // Navbar height
+  
+  @include respond-below(sm) {
+    min-height: calc(100vh - 60px); // Smaller navbar on mobile
+    margin-top: 60px;
+  }
+}
+
+.main-content {
+  flex: 1;
+  padding: var(--space-6);
+  margin-left: 280px; // Account for fixed sidebar width (expanded)
+  width: calc(100% - 280px); // Subtract sidebar width (expanded)
+  padding-top: var(--space-8); // Add extra top padding to clear navbar
+  transition: all var(--transition-normal); // Smooth transition for dynamic sizing
+  
+  // When sidebar is collapsed
+  .sidebar-collapsed & {
+    margin-left: 80px; // Account for collapsed sidebar width
+    width: calc(100% - 80px); // Subtract collapsed sidebar width
+  }
+  
+  @include respond-below(lg) {
+    margin-left: 0;
+    width: 100%;
+    padding: var(--space-4);
+    padding-top: var(--space-6);
+    
+    // Reset dynamic sizing on mobile
+    .sidebar-collapsed & {
+      margin-left: 0;
+      width: 100%;
+    }
+  }
+  
+  @include respond-below(sm) {
+    padding: var(--space-3);
+    padding-top: var(--space-4);
+  }
+}
+
+// Page Styles
+.page-header {
+  margin-bottom: var(--space-8);
+  
+  h1 {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+    margin-bottom: var(--space-2);
+    
+    @include respond-to(lg) {
+      font-size: var(--text-4xl);
+    }
+  }
+  
+  p {
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+    margin: 0;
+  }
+}
+
+.coming-soon {
+  @include flex-center;
+  @include flex-column;
+  min-height: 400px;
+  text-align: center;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-2xl);
+  border: 2px dashed var(--border-color);
+  
+  h2 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin-bottom: var(--space-4);
+  }
+  
+  p {
+    font-size: var(--text-base);
+    color: var(--text-secondary);
+    max-width: 400px;
+    line-height: 1.6;
+  }
+}

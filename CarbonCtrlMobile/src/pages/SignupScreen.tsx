@@ -26,7 +26,7 @@ const SignupScreen: React.FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
   const navigation = useNavigation();
-  const { signUp } = useAuth();
+  const { signUp, signInWithGoogle } = useAuth();
 
   const handleSignup = async () => {
     if (!displayName || !email || !password || !confirmPassword) {
@@ -49,6 +49,17 @@ const SignupScreen: React.FC = () => {
       await signUp(email, password, displayName);
     } catch (error: any) {
       Alert.alert('Signup Failed', error.message || 'An error occurred during signup');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignup = async () => {
+    setLoading(true);
+    try {
+      await signInWithGoogle();
+    } catch (error: any) {
+      Alert.alert('Google Signup Failed', error.message || 'An error occurred during Google signup');
     } finally {
       setLoading(false);
     }
@@ -156,6 +167,25 @@ const SignupScreen: React.FC = () => {
               >
                 <Text style={styles.signupButtonText}>
                   {loading ? 'Creating Account...' : 'Create Account'}
+                </Text>
+              </TouchableOpacity>
+
+              {/* Divider */}
+              <View style={styles.divider}>
+                <View style={styles.dividerLine} />
+                <Text style={styles.dividerText}>OR</Text>
+                <View style={styles.dividerLine} />
+              </View>
+
+              {/* Google Sign Up */}
+              <TouchableOpacity
+                style={[styles.googleButton, loading && styles.googleButtonDisabled]}
+                onPress={handleGoogleSignup}
+                disabled={loading}
+              >
+                <Ionicons name="logo-google" size={20} color="#fff" style={styles.googleIcon} />
+                <Text style={styles.googleButtonText}>
+                  {loading ? 'Creating Account...' : 'Continue with Google'}
                 </Text>
               </TouchableOpacity>
 
@@ -272,6 +302,41 @@ const styles = StyleSheet.create({
   },
   loginLinkText: {
     color: '#4CAF50',
+    fontWeight: 'bold',
+  },
+  divider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#ddd',
+  },
+  dividerText: {
+    marginHorizontal: 15,
+    color: '#666',
+    fontSize: 14,
+  },
+  googleButton: {
+    backgroundColor: '#DB4437',
+    paddingVertical: 16,
+    borderRadius: 12,
+    marginBottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  googleButtonDisabled: {
+    backgroundColor: '#ccc',
+  },
+  googleIcon: {
+    marginRight: 10,
+  },
+  googleButtonText: {
+    color: '#fff',
+    fontSize: 16,
     fontWeight: 'bold',
   },
 });

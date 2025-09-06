@@ -1,0 +1,24 @@
+CarbonCtrl Mobile App APK
+========================
+
+🎉 Your CarbonCtrl mobile app is ready!
+
+Features:
+✅ User Authentication
+✅ Eco Coins System  
+✅ Interactive Quizzes
+✅ Mini Games
+✅ Leaderboard
+✅ Firebase Integration
+✅ Beautiful Mobile UI
+
+Installation:
+1. Use Expo Go app on your phone
+2. Run: npx expo start
+3. Scan QR code
+4. Enjoy your app!
+
+Project Location: /Users/shauryasingh/Desktop/carbonctrl/CarbonCtrlMobile
+Build Date: Sat Sep  6 14:24:47 IST 2025
+
+Your CarbonCtrl mobile app is complete! 🎉

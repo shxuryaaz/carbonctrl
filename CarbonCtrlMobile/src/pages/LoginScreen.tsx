@@ -23,7 +23,7 @@ const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   
   const navigation = useNavigation();
-  const { signIn } = useAuth();
+  const { signIn, signInWithGoogle } = useAuth();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -36,6 +36,17 @@ const LoginScreen: React.FC = () => {
       await signIn(email, password);
     } catch (error: any) {
       Alert.alert('Login Failed', error.message || 'An error occurred during login');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    try {
+      await signInWithGoogle();
+    } catch (error: any) {
+      Alert.alert('Google Login Failed', error.message || 'An error occurred during Google login');
     } finally {
       setLoading(false);
     }
@@ -109,6 +120,25 @@ const LoginScreen: React.FC = () => {
               >
                 <Text style={styles.loginButtonText}>
                   {loading ? 'Signing In...' : 'Sign In'}
+                </Text>
+              </TouchableOpacity>
+
+              {/* Divider */}
+              <View style={styles.divider}>
+                <View style={styles.dividerLine} />
+                <Text style={styles.dividerText}>OR</Text>
+                <View style={styles.dividerLine} />
+              </View>
+
+              {/* Google Sign In */}
+              <TouchableOpacity
+                style={[styles.googleButton, loading && styles.googleButtonDisabled]}
+                onPress={handleGoogleLogin}
+                disabled={loading}
+              >
+                <Ionicons name="logo-google" size={20} color="#fff" style={styles.googleIcon} />
+                <Text style={styles.googleButtonText}>
+                  {loading ? 'Signing In...' : 'Continue with Google'}
                 </Text>
               </TouchableOpacity>
 
@@ -224,6 +254,41 @@ const styles = StyleSheet.create({
   },
   signupLinkText: {
     color: '#4CAF50',
+    fontWeight: 'bold',
+  },
+  divider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#ddd',
+  },
+  dividerText: {
+    marginHorizontal: 15,
+    color: '#666',
+    fontSize: 14,
+  },
+  googleButton: {
+    backgroundColor: '#DB4437',
+    paddingVertical: 16,
+    borderRadius: 12,
+    marginBottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  googleButtonDisabled: {
+    backgroundColor: '#ccc',
+  },
+  googleIcon: {
+    marginRight: 10,
+  },
+  googleButtonText: {
+    color: '#fff',
+    fontSize: 16,
     fontWeight: 'bold',
   },
 });

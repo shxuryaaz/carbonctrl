@@ -5,7 +5,11 @@ import {
   createUserWithEmailAndPassword, 
   signOut, 
   onAuthStateChanged,
-  updateProfile
+  GoogleAuthProvider,
+  signInWithPopup,
+  updateProfile,
+  setPersistence,
+  browserLocalPersistence
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase/config';
@@ -28,6 +32,7 @@ interface AuthContextType {
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, displayName: string) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
   updateUserProfile: (updates: Partial<UserProfile>) => Promise<void>;
 }
@@ -52,6 +57,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Set persistence to localStorage to avoid sessionStorage issues in mobile browsers
+    const initializeAuth = async () => {
+      try {
+        await setPersistence(auth, browserLocalPersistence);
+      } catch (error) {
+        console.warn('Failed to set auth persistence:', error);
+      }
+    };
+
+    initializeAuth();
+
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
       
@@ -145,6 +161,45 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  // Sign in with Google
+  const signInWithGoogle = async (): Promise<void> => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Check if user profile exists, if not create one
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      if (!userDoc.exists()) {
+        const newProfile: UserProfile = {
+          uid: user.uid,
+          email: user.email || '',
+          displayName: user.displayName || 'User',
+          ecoCoins: 100,
+          level: 1,
+          totalPoints: 0,
+          achievements: ['welcome'],
+          createdAt: new Date(),
+          lastLogin: new Date()
+        };
+        
+        await setDoc(doc(db, 'users', user.uid), {
+          ...newProfile,
+          createdAt: newProfile.createdAt,
+          lastLogin: newProfile.lastLogin
+        });
+      } else {
+        // Update last login time
+        await setDoc(doc(db, 'users', user.uid), {
+          lastLogin: new Date(),
+        }, { merge: true });
+      }
+    } catch (error: any) {
+      console.error('Google sign in error:', error);
+      throw error;
+    }
+  };
+
   const logout = async () => {
     try {
       await signOut(auth);
@@ -177,6 +232,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     loading,
     signIn,
     signUp,
+    signInWithGoogle,
     logout,
     updateUserProfile
   };
