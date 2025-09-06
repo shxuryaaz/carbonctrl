@@ -239,6 +239,38 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // Listen for auth state changes
   useEffect(() => {
+    // TEMPORARY: Use dummy profile for testing without authentication
+    const initializeDummyAuth = () => {
+      console.log('🔄 Using dummy authentication for testing');
+      
+      const dummyUser = {
+        uid: 'dummy-user-123',
+        email: 'demo@carbonctrl.com',
+        displayName: 'Demo User',
+        photoURL: null,
+      } as User;
+      
+      const dummyProfile = {
+        uid: dummyUser.uid,
+        email: dummyUser.email || '',
+        displayName: dummyUser.displayName || 'Demo User',
+        photoURL: dummyUser.photoURL || undefined,
+        role: 'student' as UserRole,
+        schoolId: 'demo-school-123',
+        className: 'Grade 10A',
+        ecoScore: 1250,
+        ecoCoins: 450,
+        level: 8,
+        badges: ['first-login', 'quiz-master', 'eco-warrior', 'tree-planter', 'energy-saver'],
+        createdAt: new Date('2024-01-01'),
+        lastLoginAt: new Date(),
+      };
+      
+      setUser(dummyUser);
+      setUserProfile(dummyProfile);
+      setLoading(false);
+    };
+
     // Set persistence to localStorage to avoid sessionStorage issues in mobile browsers
     const initializeAuth = async () => {
       try {
@@ -248,8 +280,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     };
 
+    // Use dummy auth for testing
+    initializeDummyAuth();
     initializeAuth();
 
+    // Comment out real auth for testing
+    /*
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
       
@@ -264,6 +300,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     });
 
     return unsubscribe;
+    */
   }, []);
 
   const value: AuthContextType = {
