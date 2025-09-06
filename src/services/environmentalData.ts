@@ -67,9 +67,9 @@ class EnvironmentalDataService {
     }
 
     try {
-      // Try Open-Meteo API (completely free, no key required) - using New York coordinates as default
+      // Try Open-Meteo API (completely free, no key required) - using Noida coordinates as default
       const response = await axios.get(
-        `https://api.open-meteo.com/v1/forecast?latitude=40.7128&longitude=-74.0060&current_weather=true&hourly=relativehumidity_2m`,
+        `https://api.open-meteo.com/v1/forecast?latitude=28.5355&longitude=77.3910&current_weather=true&hourly=relativehumidity_2m`,
         { timeout: 5000 }
       );
 
@@ -127,7 +127,7 @@ class EnvironmentalDataService {
     try {
       // Try Open-Meteo Air Quality API (completely free, no key required)
       const response = await axios.get(
-        `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=40.7128&longitude=-74.0060&current=european_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone`,
+        `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=28.5355&longitude=77.3910&current=european_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone`,
         { timeout: 5000 }
       );
 
@@ -191,7 +191,7 @@ class EnvironmentalDataService {
   }
 
   // Get comprehensive environmental context
-  async getEnvironmentalContext(location: string): Promise<EnvironmentalContext> {
+  async getEnvironmentalContext(location: string = 'Noida'): Promise<EnvironmentalContext> {
     const [weather, airQuality] = await Promise.all([
       this.getWeatherData(location),
       this.getAirQualityData(location)
@@ -297,7 +297,7 @@ class EnvironmentalDataService {
       humidity: Math.floor(Math.random() * 40) + 40, // 40-80%
       condition: ['Clear', 'Cloudy', 'Rainy', 'Sunny'][Math.floor(Math.random() * 4)],
       windSpeed: Math.floor(Math.random() * 20) + 5, // 5-25 km/h
-      location,
+      location: location || 'Noida',
       timestamp: new Date()
     };
   }
@@ -311,7 +311,7 @@ class EnvironmentalDataService {
       no2: Math.floor(Math.random() * 60) + 10, // 10-70 μg/m³
       so2: Math.floor(Math.random() * 30) + 5, // 5-35 μg/m³
       co: Math.floor(Math.random() * 5) + 1, // 1-6 mg/m³
-      location,
+      location: location || 'Noida',
       timestamp: new Date()
     };
   }
