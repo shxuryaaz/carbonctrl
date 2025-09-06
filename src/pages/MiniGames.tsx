@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import PhaserGame from '../components/PhaserGame';
 import { recyclingGameConfig } from '../games/RecyclingGame';
+import { treePlantingGameConfig } from '../games/TreePlantingGame';
+import { energySaverGameConfig } from '../games/EnergySaverGame';
+import { waterConservationGameConfig } from '../games/WaterConservationGame';
 import './MiniGames.scss';
 
 const MiniGames: React.FC = () => {
@@ -46,6 +49,12 @@ const MiniGames: React.FC = () => {
     switch (selectedGame) {
       case 'recycling':
         return <PhaserGame gameConfig={recyclingGameConfig} />;
+      case 'tree-planting':
+        return <PhaserGame gameConfig={treePlantingGameConfig} />;
+      case 'energy-saver':
+        return <PhaserGame gameConfig={energySaverGameConfig} />;
+      case 'water-conservation':
+        return <PhaserGame gameConfig={waterConservationGameConfig} />;
       default:
         return (
           <div className="game-placeholder">
