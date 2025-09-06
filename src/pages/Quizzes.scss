@@ -343,3 +343,123 @@
     font-size: var(--text-2xl);
   }
 }
+
+// AI Quiz Generator Styles
+.ai-quiz-generator {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
+  margin-bottom: var(--space-8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  
+  .generator-header {
+    text-align: center;
+    margin-bottom: var(--space-6);
+    
+    h2 {
+      font-size: var(--text-2xl);
+      font-weight: var(--font-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+    
+    p {
+      font-size: var(--text-base);
+      color: var(--text-secondary);
+      margin: 0;
+    }
+  }
+  
+  .generator-actions {
+    display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: var(--space-6);
+    
+    .generate-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-6);
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+      color: white;
+      border: none;
+      border-radius: var(--radius-lg);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      }
+      
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+    }
+  }
+  
+  .ai-quiz-result {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    text-align: center;
+    color: white;
+    
+    h3 {
+      font-size: var(--text-xl);
+      font-weight: var(--font-bold);
+      margin-bottom: var(--space-2);
+    }
+    
+    p {
+      font-size: var(--text-base);
+      margin-bottom: var(--space-4);
+      opacity: 0.9;
+    }
+    
+    .take-ai-quiz-btn {
+      padding: var(--space-3) var(--space-6);
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-base);
+      font-weight: var(--font-medium);
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      backdrop-filter: blur(10px);
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.5);
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+// Responsive design for AI quiz generator
+@include respond-below(md) {
+  .ai-quiz-generator {
+    padding: var(--space-4);
+    
+    .generator-actions {
+      flex-direction: column;
+      align-items: center;
+      
+      .generate-btn {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+      }
+    }
+  }
+}

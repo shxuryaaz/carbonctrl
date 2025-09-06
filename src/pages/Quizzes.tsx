@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 import Quiz from '../components/Quiz';
+import { aiInsightsService } from '../services/aiInsights';
 import './Quizzes.scss';
 
 interface QuizData {
@@ -14,9 +16,40 @@ interface QuizData {
 }
 
 const Quizzes: React.FC = () => {
+  const { userProfile } = useAuth();
   const [selectedQuiz, setSelectedQuiz] = useState<string | null>(null);
   const [showResults, setShowResults] = useState(false);
   const [quizResults, setQuizResults] = useState<{ score: number; totalPoints: number } | null>(null);
+  const [aiGeneratedQuiz, setAiGeneratedQuiz] = useState<any[]>([]);
+  const [loadingAIQuiz, setLoadingAIQuiz] = useState(false);
+
+  const generateAIContextualQuiz = async (topic: string) => {
+    if (!userProfile) return;
+    
+    setLoadingAIQuiz(true);
+    try {
+      const contextualQuestions = await aiInsightsService.getContextualQuiz(topic, userProfile);
+      setAiGeneratedQuiz(contextualQuestions);
+      
+      // Create a dynamic quiz with AI-generated questions
+      const aiQuiz: QuizData = {
+        id: `ai-${topic.toLowerCase().replace(/\s+/g, '-')}`,
+        title: `AI ${topic} Quiz`,
+        description: `Personalized ${topic} quiz based on current environmental conditions`,
+        icon: '🤖',
+        difficulty: 'Dynamic',
+        points: contextualQuestions.length * 25,
+        questions: contextualQuestions
+      };
+      
+      return aiQuiz;
+    } catch (error) {
+      console.error('Error generating AI quiz:', error);
+      return null;
+    } finally {
+      setLoadingAIQuiz(false);
+    }
+  };
 
   const quizzes: QuizData[] = [
     {
@@ -126,7 +159,14 @@ const Quizzes: React.FC = () => {
     setQuizResults(null);
   };
 
-  const selectedQuizData = quizzes.find(q => q.id === selectedQuiz);
+  const getSelectedQuizData = () => {
+    if (selectedQuiz === 'ai-generated') {
+      return (window as any).currentAIQuiz;
+    }
+    return quizzes.find(q => q.id === selectedQuiz);
+  };
+
+  const selectedQuizData = getSelectedQuizData();
 
   if (showResults && quizResults) {
     const percentage = Math.round((quizResults.score / quizResults.totalPoints) * 100);
@@ -227,6 +267,74 @@ const Quizzes: React.FC = () => {
         <h1>🧠 Eco Quizzes</h1>
         <p>Test your environmental knowledge and earn points!</p>
       </div>
+
+      {/* AI Quiz Generator */}
+      <motion.div
+        className="ai-quiz-generator"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+      >
+        <div className="generator-header">
+          <h2>🤖 AI-Powered Quizzes</h2>
+          <p>Generate personalized quizzes based on current environmental conditions</p>
+        </div>
+        
+        <div className="generator-actions">
+          <button
+            className="generate-btn"
+            onClick={() => generateAIContextualQuiz('Climate Change')}
+            disabled={loadingAIQuiz}
+          >
+            {loadingAIQuiz ? '⏳' : '🌡️'} Climate Change Quiz
+          </button>
+          <button
+            className="generate-btn"
+            onClick={() => generateAIContextualQuiz('Energy Conservation')}
+            disabled={loadingAIQuiz}
+          >
+            {loadingAIQuiz ? '⏳' : '⚡'} Energy Conservation Quiz
+          </button>
+          <button
+            className="generate-btn"
+            onClick={() => generateAIContextualQuiz('Air Quality')}
+            disabled={loadingAIQuiz}
+          >
+            {loadingAIQuiz ? '⏳' : '🌬️'} Air Quality Quiz
+          </button>
+        </div>
+        
+        {aiGeneratedQuiz.length > 0 && (
+          <motion.div
+            className="ai-quiz-result"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <h3>🎯 AI-Generated Quiz Ready!</h3>
+            <p>Your personalized quiz with {aiGeneratedQuiz.length} questions is ready to take.</p>
+            <button
+              className="take-ai-quiz-btn"
+              onClick={() => {
+                const aiQuiz = {
+                  id: 'ai-generated',
+                  title: 'AI Generated Quiz',
+                  description: 'Personalized quiz based on current conditions',
+                  icon: '🤖',
+                  difficulty: 'Dynamic',
+                  points: aiGeneratedQuiz.length * 25,
+                  questions: aiGeneratedQuiz
+                };
+                setSelectedQuiz('ai-generated');
+                // Store the AI quiz temporarily
+                (window as any).currentAIQuiz = aiQuiz;
+              }}
+            >
+              Take AI Quiz
+            </button>
+          </motion.div>
+        )}
+      </motion.div>
       
       <div className="quizzes-grid">
         {quizzes.map((quiz, index) => (

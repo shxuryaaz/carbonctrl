@@ -1,4 +1,5 @@
 import OpenAI from 'openai';
+import { EnvironmentalContext } from './environmentalData';
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -124,6 +125,43 @@ class OpenAIService {
     }
   }
 
+  // Generate contextual insights with real environmental data
+  async generateContextualInsights(userProfile: any, environmentalContext: EnvironmentalContext): Promise<AIInsights> {
+    const prompt = `Based on user profile: ${JSON.stringify(userProfile)} and current environmental conditions: 
+    Weather: ${environmentalContext.weather.condition}, ${environmentalContext.weather.temperature}°C, 
+    Air Quality: AQI ${environmentalContext.airQuality.aqi}, 
+    Season: ${environmentalContext.season}, Time: ${environmentalContext.timeOfDay},
+    Location: ${environmentalContext.location}
+    
+    Generate personalized environmental insights and recommendations. Format as JSON:
+    {
+      "carbonFootprint": estimated_number,
+      "recommendations": ["contextual_tip1", "contextual_tip2", "contextual_tip3"],
+      "achievements": ["achievement1", "achievement2"],
+      "nextGoals": ["goal1", "goal2", "goal3"],
+      "contextualTips": ["weather_tip", "air_quality_tip", "seasonal_tip"]
+    }`;
+
+    try {
+      const response = await this.makeRequest(prompt, 800);
+      const parsed = JSON.parse(response);
+      return {
+        carbonFootprint: parsed.carbonFootprint || 0,
+        recommendations: parsed.recommendations || [],
+        achievements: parsed.achievements || [],
+        nextGoals: parsed.nextGoals || []
+      };
+    } catch (error) {
+      console.error('Error parsing contextual insights:', error);
+      return {
+        carbonFootprint: 0,
+        recommendations: ['Continue your eco-friendly journey!'],
+        achievements: ['Great progress so far!'],
+        nextGoals: ['Set new environmental goals']
+      };
+    }
+  }
+
   // Generate educational content
   async generateContent(topic: string, contentType: 'article' | 'tips' | 'facts'): Promise<AIResponse> {
     let prompt = '';
@@ -154,6 +192,105 @@ class OpenAIService {
     Keep it encouraging and under 100 words.`;
 
     return await this.makeRequest(prompt, 150);
+  }
+
+  // Generate contextual quiz questions with real data
+  async generateContextualQuiz(topic: string, environmentalContext: EnvironmentalContext, userLevel: number): Promise<QuizQuestion[]> {
+    const prompt = `Generate 3 quiz questions about ${topic} for a user at level ${userLevel}. 
+    Use this real environmental data to make questions relevant and current:
+    Weather: ${environmentalContext.weather.condition}, ${environmentalContext.weather.temperature}°C
+    Air Quality: AQI ${environmentalContext.airQuality.aqi}
+    Season: ${environmentalContext.season}
+    Location: ${environmentalContext.location}
+    
+    Format as JSON:
+    {
+      "questions": [
+        {
+          "question": "Question text incorporating real data",
+          "options": ["A", "B", "C", "D"],
+          "correctAnswer": 0,
+          "explanation": "Why this answer is correct with real context",
+          "difficulty": "easy|medium|hard"
+        }
+      ]
+    }`;
+
+    try {
+      const response = await this.makeRequest(prompt, 1000);
+      const parsed = JSON.parse(response);
+      return parsed.questions || [];
+    } catch (error) {
+      console.error('Error parsing contextual quiz:', error);
+      return [];
+    }
+  }
+
+  // Generate smart notifications based on context
+  async generateSmartNotifications(userProfile: any, environmentalContext: EnvironmentalContext): Promise<string[]> {
+    const prompt = `Generate 3 personalized environmental action reminders for a user with profile: ${JSON.stringify(userProfile)} 
+    and current conditions: Weather: ${environmentalContext.weather.condition}, ${environmentalContext.weather.temperature}°C, 
+    Air Quality: AQI ${environmentalContext.airQuality.aqi}, Season: ${environmentalContext.season}, 
+    Time: ${environmentalContext.timeOfDay}, Location: ${environmentalContext.location}
+    
+    Make notifications actionable, relevant to current conditions, and encouraging. Format as JSON:
+    {
+      "notifications": ["notification1", "notification2", "notification3"]
+    }`;
+
+    try {
+      const response = await this.makeRequest(prompt, 400);
+      const parsed = JSON.parse(response);
+      return parsed.notifications || [];
+    } catch (error) {
+      console.error('Error parsing smart notifications:', error);
+      return ['Keep up the great environmental work! 🌱'];
+    }
+  }
+
+  // Generate personalized mission recommendations
+  async generatePersonalizedMissions(userProfile: any, environmentalContext: EnvironmentalContext): Promise<any[]> {
+    const prompt = `Generate 3 personalized environmental missions for a user with profile: ${JSON.stringify(userProfile)} 
+    and current conditions: Weather: ${environmentalContext.weather.condition}, ${environmentalContext.weather.temperature}°C, 
+    Air Quality: AQI ${environmentalContext.airQuality.aqi}, Season: ${environmentalContext.season}, 
+    Time: ${environmentalContext.timeOfDay}, Location: ${environmentalContext.location}
+    
+    Make missions feasible for current conditions and user level. Format as JSON:
+    {
+      "missions": [
+        {
+          "title": "Mission title",
+          "description": "Mission description",
+          "difficulty": "easy|medium|hard",
+          "points": number,
+          "estimatedTime": "X minutes",
+          "requirements": ["requirement1", "requirement2"],
+          "contextualReason": "Why this mission is relevant now"
+        }
+      ]
+    }`;
+
+    try {
+      const response = await this.makeRequest(prompt, 800);
+      const parsed = JSON.parse(response);
+      return parsed.missions || [];
+    } catch (error) {
+      console.error('Error parsing personalized missions:', error);
+      return [];
+    }
+  }
+
+  // Generate environmental impact analysis
+  async generateImpactAnalysis(userActions: any[], environmentalContext: EnvironmentalContext): Promise<string> {
+    const actionsSummary = userActions.map(action => `${action.type}: ${action.description}`).join(', ');
+    
+    const prompt = `Analyze the environmental impact of these user actions: ${actionsSummary}
+    in the context of current conditions: Weather: ${environmentalContext.weather.condition}, 
+    Air Quality: AQI ${environmentalContext.airQuality.aqi}, Season: ${environmentalContext.season}
+    
+    Provide a detailed analysis of the positive impact and suggest improvements. Keep it under 200 words.`;
+
+    return await this.makeRequest(prompt, 300);
   }
 }
 

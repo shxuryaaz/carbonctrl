@@ -1,10 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import { aiInsightsService, PersonalizedInsights } from '../services/aiInsights';
+import SmartNotifications from '../components/SmartNotifications';
 import './Dashboard.scss';
 
 const Dashboard: React.FC = () => {
   const { userProfile } = useAuth();
+  const [aiInsights, setAiInsights] = useState<PersonalizedInsights | null>(null);
+  const [loadingInsights, setLoadingInsights] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  useEffect(() => {
+    if (userProfile) {
+      loadAIInsights();
+    }
+  }, [userProfile]);
+
+  const loadAIInsights = async () => {
+    if (!userProfile) return;
+    
+    setLoadingInsights(true);
+    try {
+      const insights = await aiInsightsService.generatePersonalizedInsights(userProfile);
+      setAiInsights(insights);
+    } catch (error) {
+      console.error('Error loading AI insights:', error);
+    } finally {
+      setLoadingInsights(false);
+    }
+  };
 
   if (!userProfile) {
     return <div>Loading...</div>;
@@ -172,12 +197,82 @@ const Dashboard: React.FC = () => {
           </div>
         </motion.div>
 
+        {/* AI Insights Card */}
+        <motion.div
+          className="dashboard-card ai-insights-card"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+        >
+          <div className="card-header">
+            <h3>AI Insights</h3>
+            <span className="card-icon">🤖</span>
+            <button 
+              className="notifications-btn"
+              onClick={() => setShowNotifications(true)}
+              title="Smart Notifications"
+            >
+              🔔
+            </button>
+          </div>
+          <div className="ai-insights-content">
+            {loadingInsights ? (
+              <div className="loading-state">
+                <div className="spinner"></div>
+                <p>Generating AI insights...</p>
+              </div>
+            ) : aiInsights ? (
+              <>
+                <div className="environmental-context">
+                  <div className="weather-info">
+                    <span className="weather-icon">🌤️</span>
+                    <div className="weather-details">
+                      <div className="temperature">{aiInsights.environmentalContext.weather.temperature}°C</div>
+                      <div className="condition">{aiInsights.environmentalContext.weather.condition}</div>
+                    </div>
+                  </div>
+                  <div className="air-quality">
+                    <span className="aqi-label">AQI</span>
+                    <span className={`aqi-value ${aiInsights.environmentalContext.airQuality.aqi < 50 ? 'good' : aiInsights.environmentalContext.airQuality.aqi < 100 ? 'moderate' : 'poor'}`}>
+                      {aiInsights.environmentalContext.airQuality.aqi}
+                    </span>
+                  </div>
+                </div>
+                
+                <div className="ai-recommendations">
+                  <h4>AI Recommendations</h4>
+                  {aiInsights.insights.slice(0, 2).map((insight, index) => (
+                    <div key={insight.id} className="recommendation-item">
+                      <span className="recommendation-icon">
+                        {insight.category === 'energy' ? '⚡' : 
+                         insight.category === 'waste' ? '♻️' : 
+                         insight.category === 'transport' ? '🚗' : 
+                         insight.category === 'water' ? '💧' : '🌱'}
+                      </span>
+                      <span className="recommendation-text">{insight.description}</span>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="motivational-message">
+                  <p>"{aiInsights.motivationalMessage}"</p>
+                </div>
+              </>
+            ) : (
+              <div className="error-state">
+                <p>Unable to load AI insights</p>
+                <button onClick={loadAIInsights} className="retry-btn">Retry</button>
+              </div>
+            )}
+          </div>
+        </motion.div>
+
         {/* Leaderboard Preview */}
         <motion.div
           className="dashboard-card leaderboard-card"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
+          transition={{ duration: 0.5, delay: 0.7 }}
         >
           <div className="card-header">
             <h3>Class Leaderboard</h3>
@@ -324,6 +419,12 @@ const Dashboard: React.FC = () => {
       {userProfile.role === 'student' && renderStudentDashboard()}
       {userProfile.role === 'teacher' && renderTeacherDashboard()}
       {userProfile.role === 'admin' && renderAdminDashboard()}
+      
+      {/* Smart Notifications Modal */}
+      <SmartNotifications 
+        isOpen={showNotifications} 
+        onClose={() => setShowNotifications(false)} 
+      />
     </div>
   );
 };
