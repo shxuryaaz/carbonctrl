@@ -1,4 +1,4 @@
-# CarbonCtrl 🌍
+# CarbonCtrl
 
 A comprehensive React + Firebase + Phaser.js edtech platform for environmental education with enterprise-grade UI/UX.
 

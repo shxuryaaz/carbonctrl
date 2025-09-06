@@ -25,7 +25,7 @@ const FloatingChatbot: React.FC = () => {
     if (isOpen && messages.length === 0) {
       const welcomeMessage: Message = {
         id: '1',
-        text: `Hi ${userProfile?.displayName || 'there'}! 🌱 I'm your Environmental Guide. I can help you with:\n\n• Climate change questions\n• Environmental science topics\n• Sustainability tips\n• Eco-friendly practices\n• Carbon footprint insights\n• Environmental news & facts\n\nWhat environmental topic interests you today?`,
+        text: `Hi ${userProfile?.displayName || 'there'}! 🌍 I'm your Environmental Guide. I can help you with:\n\n• Climate change questions\n• Environmental science topics\n• Sustainability tips\n• Eco-friendly practices\n• Carbon footprint insights\n• Environmental news & facts\n\nWhat environmental topic interests you today?`,
         isUser: false,
         timestamp: new Date(),
         type: 'help'
@@ -206,7 +206,7 @@ const FloatingChatbot: React.FC = () => {
         animate={{ scale: 1 }}
         transition={{ type: "spring", stiffness: 260, damping: 20 }}
       >
-        <span className="chat-icon">🌱</span>
+        <span className="chat-icon">🌍</span>
         <span className="chat-label">Eco Guide</span>
       </motion.button>
 
@@ -223,7 +223,7 @@ const FloatingChatbot: React.FC = () => {
             {/* Header */}
             <div className="chatbot-header">
               <div className="chatbot-title">
-                <span className="ai-icon">🌱</span>
+                <span className="ai-icon">🌍</span>
                 <div>
                   <h3>Environmental Guide</h3>
                   <p>Your personal eco-education assistant</p>

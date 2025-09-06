@@ -60,7 +60,7 @@ CarbonCtrl is a gamified environmental education platform that combines interact
 ```
 src/
 ├── components/          # Reusable UI components
-│   ├── Navbar.tsx      # Top navigation with logo "CarbonCtrl 🌍"
+│   ├── Navbar.tsx      # Top navigation with logo "CarbonCtrl"
 │   ├── Sidebar.tsx     # Collapsible side navigation
 │   ├── AppLayout.tsx   # Layout wrapper (conditional navbar/sidebar)
 │   ├── ThemeToggle.tsx # Dark/light mode toggle
