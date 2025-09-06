@@ -133,18 +133,19 @@ class OpenAIService {
     Season: ${environmentalContext.season}, Time: ${environmentalContext.timeOfDay},
     Location: ${environmentalContext.location}
     
-    Generate personalized environmental insights and recommendations. Format as JSON:
+    Generate personalized environmental insights and recommendations. Return ONLY valid JSON without any markdown formatting or code blocks:
     {
-      "carbonFootprint": estimated_number,
+      "carbonFootprint": 150,
       "recommendations": ["contextual_tip1", "contextual_tip2", "contextual_tip3"],
       "achievements": ["achievement1", "achievement2"],
-      "nextGoals": ["goal1", "goal2", "goal3"],
-      "contextualTips": ["weather_tip", "air_quality_tip", "seasonal_tip"]
+      "nextGoals": ["goal1", "goal2", "goal3"]
     }`;
 
     try {
       const response = await this.makeRequest(prompt, 800);
-      const parsed = JSON.parse(response);
+      // Clean the response to remove any markdown formatting
+      const cleanResponse = response.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+      const parsed = JSON.parse(cleanResponse);
       return {
         carbonFootprint: parsed.carbonFootprint || 0,
         recommendations: parsed.recommendations || [],
@@ -203,7 +204,7 @@ class OpenAIService {
     Season: ${environmentalContext.season}
     Location: ${environmentalContext.location}
     
-    Format as JSON:
+    Return ONLY valid JSON without any markdown formatting or code blocks:
     {
       "questions": [
         {
@@ -211,14 +212,16 @@ class OpenAIService {
           "options": ["A", "B", "C", "D"],
           "correctAnswer": 0,
           "explanation": "Why this answer is correct with real context",
-          "difficulty": "easy|medium|hard"
+          "difficulty": "easy"
         }
       ]
     }`;
 
     try {
       const response = await this.makeRequest(prompt, 1000);
-      const parsed = JSON.parse(response);
+      // Clean the response to remove any markdown formatting
+      const cleanResponse = response.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+      const parsed = JSON.parse(cleanResponse);
       return parsed.questions || [];
     } catch (error) {
       console.error('Error parsing contextual quiz:', error);
@@ -233,14 +236,16 @@ class OpenAIService {
     Air Quality: AQI ${environmentalContext.airQuality.aqi}, Season: ${environmentalContext.season}, 
     Time: ${environmentalContext.timeOfDay}, Location: ${environmentalContext.location}
     
-    Make notifications actionable, relevant to current conditions, and encouraging. Format as JSON:
+    Make notifications actionable, relevant to current conditions, and encouraging. Return ONLY valid JSON without any markdown formatting or code blocks:
     {
       "notifications": ["notification1", "notification2", "notification3"]
     }`;
 
     try {
       const response = await this.makeRequest(prompt, 400);
-      const parsed = JSON.parse(response);
+      // Clean the response to remove any markdown formatting
+      const cleanResponse = response.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+      const parsed = JSON.parse(cleanResponse);
       return parsed.notifications || [];
     } catch (error) {
       console.error('Error parsing smart notifications:', error);
@@ -255,15 +260,15 @@ class OpenAIService {
     Air Quality: AQI ${environmentalContext.airQuality.aqi}, Season: ${environmentalContext.season}, 
     Time: ${environmentalContext.timeOfDay}, Location: ${environmentalContext.location}
     
-    Make missions feasible for current conditions and user level. Format as JSON:
+    Make missions feasible for current conditions and user level. Return ONLY valid JSON without any markdown formatting or code blocks:
     {
       "missions": [
         {
           "title": "Mission title",
           "description": "Mission description",
-          "difficulty": "easy|medium|hard",
-          "points": number,
-          "estimatedTime": "X minutes",
+          "difficulty": "easy",
+          "points": 50,
+          "estimatedTime": "15 minutes",
           "requirements": ["requirement1", "requirement2"],
           "contextualReason": "Why this mission is relevant now"
         }
@@ -272,11 +277,33 @@ class OpenAIService {
 
     try {
       const response = await this.makeRequest(prompt, 800);
-      const parsed = JSON.parse(response);
+      // Clean the response to remove any markdown formatting
+      const cleanResponse = response.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+      const parsed = JSON.parse(cleanResponse);
       return parsed.missions || [];
     } catch (error) {
       console.error('Error parsing personalized missions:', error);
-      return [];
+      // Return fallback missions
+      return [
+        {
+          title: "Energy Saving Challenge",
+          description: "Turn off unnecessary lights and electronics for 1 hour",
+          difficulty: "easy",
+          points: 30,
+          estimatedTime: "5 minutes",
+          requirements: ["Access to lights/electronics"],
+          contextualReason: "Perfect for current weather conditions"
+        },
+        {
+          title: "Recycling Mission",
+          description: "Sort and recycle 5 items from your home",
+          difficulty: "medium",
+          points: 50,
+          estimatedTime: "10 minutes",
+          requirements: ["Recyclable items", "Recycling bins"],
+          contextualReason: "Great for improving air quality"
+        }
+      ];
     }
   }
 

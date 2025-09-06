@@ -67,7 +67,7 @@ class EnvironmentalDataService {
     }
 
     try {
-      // Try Open-Meteo API (completely free, no key required)
+      // Try Open-Meteo API (completely free, no key required) - using New York coordinates as default
       const response = await axios.get(
         `https://api.open-meteo.com/v1/forecast?latitude=40.7128&longitude=-74.0060&current_weather=true&hourly=relativehumidity_2m`,
         { timeout: 5000 }
